@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard — Stanford Health Centre</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin-body">
+
+<!-- ================= LOGIN SCREEN ================= -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-card">
+    <div class="brand">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#0B3D3B" stroke-width="2.6" stroke-linecap="round"/></svg></span>
+      <span class="brand-name">Stanford Health Centre<span>Admin</span></span>
+    </div>
+    <h1>Staff sign in</h1>
+    <p class="sub">Sign in to manage products, outreach events and the gallery.</p>
+    <p class="login-error" id="loginError"></p>
+    <form id="loginForm">
+      <div class="field">
+        <label for="li-email">Email</label>
+        <input id="li-email" type="email" required placeholder="you@stanfordhealthcentre.org">
+      </div>
+      <div class="field">
+        <label for="li-pass">Password</label>
+        <input id="li-pass" type="password" required placeholder="••••••••">
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">Sign in</button>
+    </form>
+    <p class="field-hint" style="margin-top:16px;">Accounts are created in Firebase Authentication &gt; Users. See README.md for setup steps.</p>
+  </div>
+</div>
+
+<!-- ================= DASHBOARD ================= -->
+<div class="admin-shell" id="adminShell" style="display:none;">
+  <aside class="admin-sidebar">
+    <a href="index.html" class="brand">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#0B3D3B" stroke-width="2.6" stroke-linecap="round"/></svg></span>
+      <span class="brand-name">Stanford Health Centre<span>Admin</span></span>
+    </a>
+    <nav class="admin-nav" id="adminNav">
+      <button data-panel="products" class="active">Products</button>
+      <button data-panel="events">Outreach events</button>
+      <button data-panel="gallery">Gallery</button>
+    </nav>
+    <div class="admin-sidebar-foot">
+      <span class="admin-user" id="adminUserEmail"></span>
+      <button class="btn btn-outline btn-sm" id="logoutBtn">Sign out</button>
+      <a href="index.html" class="btn-ghost" style="color:var(--amber);font-size:13px;">← View live site</a>
+    </div>
+  </aside>
+
+  <main class="admin-main">
+    <div class="admin-topbar">
+      <div>
+        <h1 id="panelTitle">Products</h1>
+        <p id="panelSub">Everything shown in the "Shop" section of the website.</p>
+      </div>
+    </div>
+
+    <!-- ---------- PRODUCTS PANEL ---------- -->
+    <section class="admin-panel active" id="panel-products">
+      <div class="admin-toolbar">
+        <span class="field-hint">Products are shown newest-first on the website.</span>
+        <button class="btn btn-primary btn-sm" id="addProductBtn">+ Add product</button>
+      </div>
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead><tr><th>Image</th><th>Name</th><th>Tag</th><th>Price</th><th></th></tr></thead>
+          <tbody id="productsTableBody"><tr><td colspan="5" style="text-align:center;color:#7a8985;">Loading…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ---------- EVENTS PANEL ---------- -->
+    <section class="admin-panel" id="panel-events">
+      <div class="admin-toolbar">
+        <span class="field-hint">Events are shown ordered by date on the website.</span>
+        <button class="btn btn-primary btn-sm" id="addEventBtn">+ Add event</button>
+      </div>
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead><tr><th>Image</th><th>Title</th><th>Tag</th><th>Date</th><th></th></tr></thead>
+          <tbody id="eventsTableBody"><tr><td colspan="5" style="text-align:center;color:#7a8985;">Loading…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ---------- GALLERY PANEL ---------- -->
+    <section class="admin-panel" id="panel-gallery">
+      <div class="admin-toolbar">
+        <span class="field-hint">Images shown in the site's photo gallery.</span>
+        <button class="btn btn-primary btn-sm" id="addGalleryBtn">+ Add photo</button>
+      </div>
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead><tr><th>Image</th><th>Caption</th><th>Category</th><th></th></tr></thead>
+          <tbody id="galleryTableBody"><tr><td colspan="4" style="text-align:center;color:#7a8985;">Loading…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- ================= PRODUCT MODAL ================= -->
+<div class="modal-overlay" id="productModal">
+  <div class="modal-box">
+    <h2 id="productModalTitle">Add product</h2>
+    <form id="productForm">
+      <input type="hidden" id="p-id">
+      <div class="field">
+        <label for="p-name">Product name</label>
+        <input id="p-name" type="text" required placeholder="e.g. Paracetamol 500mg">
+      </div>
+      <div class="field">
+        <label for="p-description">Description</label>
+        <textarea id="p-description" placeholder="Short description shown on the product card"></textarea>
+      </div>
+      <div class="field">
+        <label for="p-price">Price (UGX)</label>
+        <input id="p-price" type="number" min="0" step="1" placeholder="5000">
+      </div>
+      <div class="field">
+        <label for="p-tag">Tag</label>
+        <input id="p-tag" type="text" placeholder="e.g. Pain relief, Antibiotic, Best seller">
+      </div>
+      <div class="field">
+        <label for="p-note">Note (optional)</label>
+        <input id="p-note" type="text" placeholder="e.g. Prescription required, Low stock">
+      </div>
+      <div class="field">
+        <label>Product image</label>
+        <div class="image-input-group">
+          <div class="image-input-row">
+            <input type="text" id="p-image-link" placeholder="Paste an image URL…">
+            <button type="button" class="upload-btn" id="p-upload-btn">Upload</button>
+            <input type="file" id="p-image-file" accept="image/*" style="display:none;">
+          </div>
+          <img id="p-image-preview" class="image-preview" alt="Preview">
+          <span class="upload-progress" id="p-upload-progress"></span>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="p-cancel">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save product</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ================= EVENT MODAL ================= -->
+<div class="modal-overlay" id="eventModal">
+  <div class="modal-box">
+    <h2 id="eventModalTitle">Add event</h2>
+    <form id="eventForm">
+      <input type="hidden" id="e-id">
+      <div class="field">
+        <label for="e-title">Event title</label>
+        <input id="e-title" type="text" required placeholder="e.g. Free malaria screening — Kasenyi">
+      </div>
+      <div class="field">
+        <label for="e-description">Description</label>
+        <textarea id="e-description" placeholder="What will happen at this event"></textarea>
+      </div>
+      <div class="form-row">
+        <div class="field">
+          <label for="e-date">Date</label>
+          <input id="e-date" type="date" required>
+        </div>
+        <div class="field">
+          <label for="e-location">Location</label>
+          <input id="e-location" type="text" placeholder="e.g. Kasenyi Trading Centre">
+        </div>
+      </div>
+      <div class="field">
+        <label for="e-tag">Tag</label>
+        <input id="e-tag" type="text" placeholder="e.g. Upcoming, Ongoing, Completed">
+      </div>
+      <div class="field">
+        <label>Event image</label>
+        <div class="image-input-group">
+          <div class="image-input-row">
+            <input type="text" id="e-image-link" placeholder="Paste an image URL…">
+            <button type="button" class="upload-btn" id="e-upload-btn">Upload</button>
+            <input type="file" id="e-image-file" accept="image/*" style="display:none;">
+          </div>
+          <img id="e-image-preview" class="image-preview" alt="Preview">
+          <span class="upload-progress" id="e-upload-progress"></span>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="e-cancel">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save event</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ================= GALLERY MODAL ================= -->
+<div class="modal-overlay" id="galleryModal">
+  <div class="modal-box">
+    <h2 id="galleryModalTitle">Add photo</h2>
+    <form id="galleryForm">
+      <input type="hidden" id="g-id">
+      <div class="field">
+        <label for="g-caption">Caption</label>
+        <input id="g-caption" type="text" placeholder="e.g. Free screening day at Kasenyi">
+      </div>
+      <div class="field">
+        <label for="g-category">Category</label>
+        <input id="g-category" type="text" placeholder="e.g. Outreach, Clinic, Team">
+      </div>
+      <div class="field">
+        <label>Photo</label>
+        <div class="image-input-group">
+          <div class="image-input-row">
+            <input type="text" id="g-image-link" placeholder="Paste an image URL…">
+            <button type="button" class="upload-btn" id="g-upload-btn">Upload</button>
+            <input type="file" id="g-image-file" accept="image/*" style="display:none;">
+          </div>
+          <img id="g-image-preview" class="image-preview" alt="Preview">
+          <span class="upload-progress" id="g-upload-progress"></span>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="g-cancel">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save photo</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-auth-compat.js"></script>
+
+<script src="js/firebase-config.js"></script>
+<script src="js/cloudinary.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>
