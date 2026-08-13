@@ -1,5 +1,5 @@
 /* ============================================================
-   STANFORD HEALTH CENTRE — Cloudinary Upload Helper
+   sanford HEALTH CENTRE — Cloudinary Upload Helper
    ------------------------------------------------------------
    1. Create a free account at https://cloudinary.com
    2. Copy your "Cloud name" from the dashboard, paste below.

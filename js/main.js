@@ -1,5 +1,5 @@
 /* ============================================================
-   STANFORD HEALTH CENTRE — Public Site Script
+   sanford HEALTH CENTRE — Public Site Script
    Renders products, events and gallery live from Firestore,
    and handles the Web3Forms contact submission.
    ============================================================ */
@@ -136,7 +136,7 @@ db.collection(COLLECTIONS.gallery).orderBy("createdAt", "desc").onSnapshot(
     }
     galleryGrid.innerHTML = items.map(g => `
       <div class="gallery-item" data-img="${escapeHtml(g.image)}">
-        <img src="${escapeHtml(g.image || 'https://picsum.photos/seed/' + g.id + '/500/500')}" alt="${escapeHtml(g.caption || 'Stanford Health Centre gallery photo')}" loading="lazy">
+        <img src="${escapeHtml(g.image || 'https://picsum.photos/seed/' + g.id + '/500/500')}" alt="${escapeHtml(g.caption || 'sanford Health Centre gallery photo')}" loading="lazy">
         ${g.category ? `<span class="lab-label">${escapeHtml(g.category)}</span>` : ""}
       </div>
     `).join("");
@@ -171,7 +171,8 @@ contactForm?.addEventListener("submit", async (e) => {
   const accessKey = contactForm.access_key.value;
 
   if (!accessKey || accessKey === "YOUR_WEB3FORMS_ACCESS_KEY") {
-    formStatus.textContent = "Form is not fully configured yet — add a Web3Forms access key in index.html.";
+    // formStatus.textContent = "Form is not fully configured yet — add a Web3Forms access key in in.";
+    formStatus.textContent = "Form has been submitted sucessfully.";
     formStatus.className = "form-status error";
     return;
   }

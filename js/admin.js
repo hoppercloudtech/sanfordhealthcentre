@@ -1,5 +1,5 @@
 /* ============================================================
-   STANFORD HEALTH CENTRE — Admin Dashboard Script
+   sanford HEALTH CENTRE — Admin Dashboard Script
    Auth guard + CRUD for products, events and gallery collections.
    ============================================================ */
 
