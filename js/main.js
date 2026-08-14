@@ -1,5 +1,5 @@
 /* ============================================================
-   sanford HEALTH CENTRE — Public Site Script
+   Sanford HEALTH CENTRE — Public Site Script
    Renders products, events and gallery live from Firestore,
    and handles the Web3Forms contact submission.
    ============================================================ */
@@ -136,7 +136,7 @@ db.collection(COLLECTIONS.gallery).orderBy("createdAt", "desc").onSnapshot(
     }
     galleryGrid.innerHTML = items.map(g => `
       <div class="gallery-item" data-img="${escapeHtml(g.image)}">
-        <img src="${escapeHtml(g.image || 'https://picsum.photos/seed/' + g.id + '/500/500')}" alt="${escapeHtml(g.caption || 'sanford Health Centre gallery photo')}" loading="lazy">
+        <img src="${escapeHtml(g.image || 'https://picsum.photos/seed/' + g.id + '/500/500')}" alt="${escapeHtml(g.caption || 'Sanford Health Centre gallery photo')}" loading="lazy">
         ${g.category ? `<span class="lab-label">${escapeHtml(g.category)}</span>` : ""}
       </div>
     `).join("");

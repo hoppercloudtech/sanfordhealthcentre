@@ -1,5 +1,5 @@
 /* ============================================================
-   sanford HEALTH CENTRE — Firebase Configuration
+   Sanford HEALTH CENTRE — Firebase Configuration
    ------------------------------------------------------------
    1. Go to https://console.firebase.google.com
    2. Create a project (or use an existing one)
